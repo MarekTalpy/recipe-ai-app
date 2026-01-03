@@ -1,0 +1,12 @@
+# Dependencies
+node_modules/
+
+# Build folders
+dist/
+.expo/
+
+# Environment variables (Crucial for AI keys!)
+.env
+
+# OS files
+.DS_Store
