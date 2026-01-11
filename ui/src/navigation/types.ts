@@ -1,6 +1,8 @@
+import { Ingredient } from '../types';
+
 export type AIStackParamList = {
   IngredientScan: undefined;
-  RecipeList: { ingredients: string[] };
+  RecipeList: { ingredients: Ingredient[] };
 };
 
 export type SavedStackParamList = {

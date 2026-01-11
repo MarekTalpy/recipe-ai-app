@@ -5,6 +5,7 @@ import express, { Application, Request, Response } from 'express';
 import cors from 'cors';
 
 import ingredientRoutes from './routes/ingredientRoutes';
+import recipeRoutes from './routes/recipeRoutes';
 
 const app: Application = express();
 const PORT = process.env.PORT ?? 5000;
@@ -20,7 +21,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // Placeholder for future routes
 app.use('/api/ingredients', ingredientRoutes);
-// app.use('/api/recipes', recipesRoutes);
+app.use('/api/recipes', recipeRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is sprinting on http://localhost:${PORT}`);

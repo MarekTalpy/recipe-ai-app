@@ -16,7 +16,7 @@ const RecipeListScreen = () => {
         {ingredients.map((item, index) => (
           <View key={`${item}-${index}`} style={styles.ingredientItem}>
             <Text style={styles.bullet}>•</Text>
-            <Text style={styles.itemText}>{item}</Text>
+            <Text style={styles.itemText}>{item.name}</Text>
           </View>
         ))}
       </View>

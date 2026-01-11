@@ -21,11 +21,14 @@ router.post('/detect', upload.single('image'), async (req: Request, res: Respons
       return res.status(400).json({ error: 'No image uploaded' });
     }
 
-    // Mock logic: If the file name contains "blur", simulate an error
-    if (req.file.originalname.includes('blur')) {
+    // We catch obvious issues before spending money on the API
+    const isTestingBlur = req.file.originalname.includes('blur');
+    const isTooSmall = req.file.size < 5000; // Example: less than 5KB is likely a broken file
+
+    if (isTestingBlur || isTooSmall) {
       return res.status(422).json({
-        error: 'Image too blurry',
-        suggestion: 'Please try taking the photo again in better lighting.',
+        error: 'Quality check failed',
+        suggestion: 'The image appears too blurry or small. Please try again with better lighting.',
       });
     }
 
@@ -86,9 +89,15 @@ router.post('/detect', upload.single('image'), async (req: Request, res: Respons
     const aiContent = response.choices[0].message.content;
     const result = aiContent ? JSON.parse(aiContent) : { ingredients: [] };
 
+    // confidence factor for ai (30% certainty) filtering logic
+    const MIN_CONFIDENCE = 0.3;
+
+    // SORTING LOGIC: filter out ingredients that the AI is very unsure about
     // SORTING LOGIC: High Confidence -> Low Confidence
     if (result.ingredients && Array.isArray(result.ingredients)) {
-      result.ingredients.sort((a: Ingredient, b: Ingredient) => b.confidence - a.confidence);
+      result.ingredients = result.ingredients
+        .filter((i: any) => i.confidence >= MIN_CONFIDENCE)
+        .sort((a: Ingredient, b: Ingredient) => b.confidence - a.confidence);
     }
 
     res.json(result);

@@ -1,2 +1,6 @@
-const API_IP = '192.168.1.145';
-export const API_URL = `http://${API_IP}:5000/api`;
+// src/constants/config.ts
+export const API_URL = process.env.EXPO_PUBLIC_API_URL;
+
+if (!API_URL) {
+  console.warn('API_URL is not defined! Check your .env file.');
+}
