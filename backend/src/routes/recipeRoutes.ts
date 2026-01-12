@@ -44,22 +44,29 @@ router.post('/match', async (req: Request, res: Response) => {
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
-      temperature: temperature, // <--- Apply the precision here
+      temperature: temperature,
       messages: [
         {
           role: 'system',
-          content: `You are a Master Chef. Generate exactly ${recipesLimit} recipes based on the provided ingredients.
-          The prepTime for all recipes MUST be ideally under or around ${maxTime}
-          Rules:
-          - matchPercentage: Calculate based on how many provided ingredients are used vs total needed for the dish.
-          - origin: Specify the country or region of the dish.
-          - youtubeUrl: Provide a direct search link: https://www.youtube.com/results?search_query=[dish+name+recipe].
-          - id: Generate a unique short string ID (e.g., 'rec_01').
-          - Strictness: If precision is high, stick strictly to the ingredients provided.`,
+          content: `You are a Master Chef. Generate exactly ${recipesLimit} recipes.
+    
+          CRITICAL RULES for matchPercentage:
+          1. Do NOT only suggest recipes with 100% matches. 
+          2. If the user has 3 ingredients but a great recipe needs 5, list all 5 in 'ingredientsRequired' and calculate the match accordingly (e.g., 60%).
+          3. 'matchPercentage' calculation: (Number of provided ingredients used / Total ingredients in 'ingredientsRequired') * 100.
+          4. If 'precision' is high, prioritize higher matches. If medium/low, suggest creative recipes even if the match is 40-70%.
+          
+          Other Rules:
+          - prepTime: Ideally around ${maxTime}.
+          - origin: Specific country/region.
+          - youtubeUrl: Search link: https://www.youtube.com/results?search_query=[dish+name+recipe].
+          - id: Unique short string ID.`,
         },
         {
           role: 'user',
-          content: `Ingredients: ${ingredients.join(', ')}`,
+          content: `User has these ingredients: ${ingredients.join(
+            ', '
+          )}. Please suggest a mix of perfect matches and recipes where 1 or 2 items might be missing.`,
         },
       ],
       response_format: {

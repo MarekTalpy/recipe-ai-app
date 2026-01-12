@@ -1,16 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import SavedRecipesScreen from '../screens/Saved/SavedRecipesScreen';
 import { AIStack } from './AIStack';
-import { SavedRecipesStack } from './SavedRecipesStack';
-import { RootTabParamList } from './types';
+import { TabParamList } from './types';
 
-const Tab = createBottomTabNavigator<RootTabParamList>();
+const Tab = createBottomTabNavigator<TabParamList>();
 
-export const TabNavigator = () => (
+export const MainTabNavigator = () => (
   <Tab.Navigator screenOptions={{ headerShown: false }}>
     <Tab.Screen
-      name="AITab"
+      name="AIStack"
       component={AIStack}
       options={{
         tabBarLabel: 'AI Chef',
@@ -18,10 +18,10 @@ export const TabNavigator = () => (
       }}
     />
     <Tab.Screen
-      name="SavedTab"
-      component={SavedRecipesStack}
+      name="SavedRecipes"
+      component={SavedRecipesScreen}
       options={{
-        tabBarLabel: 'Saved',
+        tabBarLabel: 'Saved Recipes',
         tabBarIcon: ({ color, size }) => <Ionicons name="heart" size={size} color={color} />,
       }}
     />

@@ -1,6 +1,6 @@
 import { ActivityIndicator, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle } from 'react-native';
 
-import { Colors } from '../constants/Colors';
+import { Colors } from '../../constants/Colors';
 
 export type CustomButtonProps = PressableProps & {
   title: string;

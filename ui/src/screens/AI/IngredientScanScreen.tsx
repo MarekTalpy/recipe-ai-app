@@ -4,8 +4,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
 import { Alert, Image, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
-import Chip from '@/src/components/Chip';
-import { CustomButton } from '@/src/components/CustomButton';
+import Chip from '@/src/components/ui/Chip';
+import { CustomButton } from '@/src/components/ui/CustomButton';
 import { Colors } from '@/src/constants/Colors';
 import { apiRequest } from '@/src/services/api';
 import { Ingredient } from '@/src/types';
@@ -102,10 +102,6 @@ const IngredientScanScreen = () => {
     setIngredients(ingredients.filter((_, i) => i !== index));
   };
 
-  const handleDetect = () => {
-    Alert.alert('AI Detection', 'This will trigger the camera and AI logic later!');
-  };
-
   const handleConfirm = () => {
     if (ingredients.length === 0) {
       Alert.alert('Error', 'Please add at least one ingredient.');
@@ -115,7 +111,6 @@ const IngredientScanScreen = () => {
   };
 
   const processImage = async (uri: string) => {
-    console.log('Image URI ready for backend:', uri);
     setSelectedImage(uri);
 
     // TODO: sent ingredients to the backend for further processing

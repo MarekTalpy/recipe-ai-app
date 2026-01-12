@@ -1,11 +1,11 @@
 import { NavigationContainer } from '@react-navigation/native';
 
-import { TabNavigator } from './TabNavigator';
+import { RootStackNavigator } from './RootStackNavigator';
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <TabNavigator />
+      <RootStackNavigator />
     </NavigationContainer>
   );
 };
