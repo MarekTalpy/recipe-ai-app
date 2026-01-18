@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, StyleSheet, Text, View } from 'react-native';
 
-import { SavedStackParamList } from '../../navigation/types';
+import { SavedStackParamList } from '../navigation/types';
 
 const SavedRecipesScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<SavedStackParamList>>();

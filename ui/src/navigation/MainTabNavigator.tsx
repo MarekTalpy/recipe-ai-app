@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import SavedRecipesScreen from '../screens/Saved/SavedRecipesScreen';
+import SavedRecipesScreen from '../screens/SavedRecipesScreen';
 import { AIStack } from './AIStack';
 import { TabParamList } from './types';
 

@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import OpenAI from 'openai';
 
 import { RECIPE_CONFIG } from '../constants';
+import { Recipe } from '../types';
 
 const router = Router();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -9,6 +10,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 router.post('/match', async (req: Request, res: Response) => {
   try {
     const { ingredients } = req.body;
+
+    console.log(' API side ingredients', ingredients);
 
     const precision = (req.query.precision as string) || RECIPE_CONFIG.PRECISION_MODES.MEDIUM;
     const maxTime = (req.query.maxPrepTime as string) || RECIPE_CONFIG.PREP_TIME_OPTIONS.ANY;
@@ -65,7 +68,7 @@ router.post('/match', async (req: Request, res: Response) => {
         {
           role: 'user',
           content: `User has these ingredients: ${ingredients.join(
-            ', '
+            ', ',
           )}. Please suggest a mix of perfect matches and recipes where 1 or 2 items might be missing.`,
         },
       ],
@@ -115,7 +118,18 @@ router.post('/match', async (req: Request, res: Response) => {
     });
 
     const aiContent = response.choices[0].message.content;
-    res.json(aiContent ? JSON.parse(aiContent) : { recipes: [] });
+
+    if (aiContent) {
+      const parsedData = JSON.parse(aiContent);
+
+      if (parsedData.recipes && Array.isArray(parsedData.recipes)) {
+        parsedData.recipes.sort((a: Recipe, b: Recipe) => b.matchPercentage - a.matchPercentage);
+      }
+
+      res.json(parsedData);
+    } else {
+      res.json({ recipes: [] });
+    }
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch recipes' });
   }

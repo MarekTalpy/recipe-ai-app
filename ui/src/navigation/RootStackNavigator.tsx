@@ -1,6 +1,6 @@
-import { createNativeStackNavigator, NativeStackNavigationOptions } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import RecipeDetailScreen from '../screens/Saved/RecipeDetailScreen';
+import RecipeDetailScreen from '../screens/RecipeDetailScreen';
 import { MainTabNavigator } from './MainTabNavigator';
 import { RootStackParamList } from './types';
 
@@ -18,12 +18,10 @@ export const RootStackNavigator = () => {
       <Stack.Screen
         name="RecipeDetail"
         component={RecipeDetailScreen}
-        options={({ route }): NativeStackNavigationOptions => ({
-          title: route.params?.recipe?.title ?? 'Recipe Details',
+        options={{
           headerTitleStyle: { fontWeight: 'bold' },
           headerBackTitle: 'Back',
-          headerBackVisible: true,
-        })}
+        }}
       />
     </Stack.Navigator>
   );
